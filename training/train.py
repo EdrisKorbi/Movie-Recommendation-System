@@ -19,7 +19,7 @@ warnings.filterwarnings('ignore')
 
 
 class MovieRecommenderTrainer:
-    def __init__(self, output_dir='./models', use_dimensionality_reduction=True, n_components=500):
+    def __init__(self, output_dir='./training/models', use_dimensionality_reduction=True, n_components=500):
         """
         Initialize the trainer with advanced configurations
         
@@ -203,7 +203,7 @@ class MovieRecommenderTrainer:
             max_features = 15000
         else:
             max_features = 20000
-        
+        max_features = min(max_features, 5000)
         print(f"Using max_features={max_features} for {n_movies} movies")
         
         tfidf = TfidfVectorizer(
@@ -394,14 +394,15 @@ if __name__ == "__main__":
     
     # For HIGH QUALITY dataset (~100K movies) - Recommended
     trainer = MovieRecommenderTrainer(
-        output_dir='./models',
+        output_dir='./training/models',   # so Django can load it directly
         use_dimensionality_reduction=True,
-        n_components=500
+        n_components=200                  # smaller, safer
     )
+
     df, sim_matrix = trainer.train(
-        path, 
-        quality_threshold='medium',  # 50+ votes
-        max_movies=50000  # Top 100K by quality
+        path,
+        quality_threshold='high',         # 500+ votes => fewer movies
+        max_movies=5000                   # hard cap => small similarity matrix
     )
     
     # For MEDIUM dataset (~10K movies) - Fast training
