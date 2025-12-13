@@ -3,6 +3,8 @@ services:
     image: ghcr.io/edriskorbi/movie-recommendation-system:latest
     ports:
       - "8000:8000"
+    volumes:
+      - ../training/models:/app/training/models
     restart: unless-stopped
 
   cadvisor:
