@@ -58,7 +58,9 @@ htmlcov/
 *.pyc
 *.csv
 *.pkl
-*.json
 *.npy
 *.parquet
 *.npz
+
+training/models/
+    
